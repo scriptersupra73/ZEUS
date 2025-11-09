@@ -61,13 +61,11 @@
         /* Video Background */
         #bg-video {
             position: fixed;
-            top: 50%;
-            left: 50%;
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
-            transform: translate(-50%, -50%);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
             z-index: 0;
             opacity: 0.4;
         }
@@ -380,10 +378,7 @@
             color: #ffffff;
             margin-bottom: 30px;
             overflow: hidden;
-            border-right: 3px solid #ffffff;
             white-space: nowrap;
-            animation: typing 2s steps(4) 0.5s forwards, blink 0.7s step-end infinite;
-            width: 0;
             text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
         }
 
@@ -406,8 +401,7 @@
         .subtitle {
             font-size: 24px;
             letter-spacing: 8px;
-            opacity: 0;
-            animation: fadeInUp 1s ease 2.5s forwards;
+            opacity: 1;
             text-transform: uppercase;
             color: #cccccc;
         }
@@ -613,12 +607,12 @@
 
     <!-- Background Video -->
     <video id="bg-video" autoplay loop muted playsinline>
-        <source src="https://files.catbox.moe/4gngmw.mp4" type="video/mp4">
+        <source src="https://files.catbox.moe/hou17s.mp4" type="video/mp4">
     </video>
 
     <!-- Background Audio -->
-    <audio id="bg-audio" autoplay loop>
-        <source src="https://files.catbox.moe/srb7v3.mp3" type="audio/mpeg">
+    <audio id="bg-audio" loop preload="auto">
+        <source src="https://files.catbox.moe/wj7k3x.mp3" type="audio/mpeg">
     </audio>
 
     <div class="overlay"></div>
@@ -799,15 +793,44 @@
 
         createParticles();
 
-        // Audio autoplay fallback (some browsers block autoplay)
+        // Audio autoplay with better error handling
         const audio = document.getElementById('bg-audio');
+        audio.volume = 1.0; // Set volume to 100% - MAXIMUM VOLUME
+        
+        // Function to try playing audio
+        function tryPlayAudio() {
+            const playPromise = audio.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    console.log('Audio playing successfully at max volume');
+                }).catch(error => {
+                    console.log('Autoplay prevented, waiting for user interaction:', error);
+                    // Add click listener to play on first interaction
+                    const playOnInteraction = () => {
+                        audio.play().then(() => {
+                            console.log('Audio started after user interaction at max volume');
+                        }).catch(err => {
+                            console.error('Audio play failed:', err);
+                        });
+                        document.removeEventListener('click', playOnInteraction);
+                        document.removeEventListener('touchstart', playOnInteraction);
+                        document.removeEventListener('keydown', playOnInteraction);
+                    };
+                    
+                    document.addEventListener('click', playOnInteraction);
+                    document.addEventListener('touchstart', playOnInteraction);
+                    document.addEventListener('keydown', playOnInteraction);
+                });
+            }
+        }
         
         // Try to play immediately
-        audio.play().catch(() => {
-            // If blocked, play on first user interaction
-            document.body.addEventListener('click', () => {
-                audio.play();
-            }, { once: true });
+        tryPlayAudio();
+        
+        // Also try when page is fully loaded
+        window.addEventListener('load', () => {
+            setTimeout(tryPlayAudio, 100);
         });
 
         // GOD OF COURSES Lightning Effect
@@ -820,12 +843,6 @@
                     createLightningBolt();
                 }, i * 50);
             }
-            
-            // Screen flash
-            document.body.style.filter = 'brightness(1.8)';
-            setTimeout(() => {
-                document.body.style.filter = 'brightness(1)';
-            }, 100);
         });
 
         function createLightningBolt() {
@@ -880,16 +897,6 @@
             cursor.style.transform = 'scale(1)';
             cursor.style.borderColor = '#ffffff';
         });
-
-        // Random Lightning Flashes
-        setInterval(() => {
-            if (Math.random() > 0.7) {
-                document.body.style.filter = 'brightness(1.5)';
-                setTimeout(() => {
-                    document.body.style.filter = 'brightness(1)';
-                }, 100);
-            }
-        }, 2000);
 
         // Course Selection Flow
         let selectedCourse = '';
@@ -966,12 +973,6 @@
             }
         `;
         document.head.appendChild(style);
-
-        // Parallax Video (disabled for no scroll)
-        // window.addEventListener('scroll', () => {
-        //     const scrolled = window.pageYOffset;
-        //     document.getElementById('bg-video').style.transform = `translate(-50%, ${-50 + scrolled * 0.5}%)`;
-        // });
     </script>
 </body>
 </html>
