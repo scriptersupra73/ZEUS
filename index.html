@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZEUS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            cursor: auto;
+        }
+
+        body * {
+            cursor: auto;
+        }
+
+        body {
+            font-family: 'Arial Black', sans-serif;
+            overflow-y: scroll;
+            overflow-x: hidden;
+            background: #000;
+            color: #fff;
+            scroll-behavior: smooth;
+        }
+
+        html {
+            overflow-y: scroll;
+        }
+
+        /* Custom Cursor */
+        .cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            transition: all 0.1s ease;
+            box-shadow: 0 0 20px #ffffff, 0 0 40px rgba(255, 255, 255, 0.6);
+            display: none;
+        }
+
+        .cursor-follower {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 0.15s ease;
+            display: none;
+        }
+
+        /* Video Background */
+        #bg-video {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            opacity: 0.4;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.8) 100%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Main Container */
+        .container {
+            position: relative;
+            z-index: 2;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            padding-bottom: 100px;
+        }
+
+        /* Scroll Indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            animation: fadeInUp 1s ease 3.5s forwards, bounce 2s ease-in-out 4.5s infinite;
+            text-align: center;
+            z-index: 10;
+        }
+
+        .scroll-text {
+            font-size: 16px;
+            letter-spacing: 3px;
+            color: #999;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .scroll-arrow {
+            font-size: 30px;
+            color: #fff;
+            animation: arrowBounce 1.5s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+        }
+
+        @keyframes arrowBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(10px); }
+        }
+
+        /* Course Section */
+        .course-section {
+            position: relative;
+            z-index: 2;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 100px 20px 100px 20px;
+        }
+
+        .section-title {
+            font-size: 60px;
+            font-weight: 900;
+            letter-spacing: 10px;
+            color: #fff;
+            text-align: center;
+            margin-bottom: 60px;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+        }
+
+        .course-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            padding: 40px 60px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            margin-bottom: 30px;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .course-card:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #fff;
+            transform: scale(1.05);
+            box-shadow: 0 0 40px rgba(255, 255, 255, 0.3);
+        }
+
+        .course-name {
+            font-size: 36px;
+            font-weight: 900;
+            letter-spacing: 5px;
+            color: #fff;
+        }
+
+        /* Payment Section */
+        .payment-section {
+            display: none;
+            text-align: center;
+            max-width: 600px;
+        }
+
+        .payment-section.active {
+            display: block;
+        }
+
+        .cashapp-link {
+            display: inline-block;
+            font-size: 48px;
+            font-weight: 900;
+            color: #00d632;
+            text-decoration: none;
+            padding: 20px 40px;
+            border: 3px solid #00d632;
+            border-radius: 10px;
+            margin: 30px 0;
+            transition: all 0.3s ease;
+            letter-spacing: 3px;
+        }
+
+        .cashapp-link:hover {
+            background: #00d632;
+            color: #000;
+            box-shadow: 0 0 40px rgba(0, 214, 50, 0.6);
+            transform: scale(1.05);
+        }
+
+        .payment-info {
+            font-size: 18px;
+            color: #999;
+            margin: 20px 0;
+            line-height: 1.8;
+        }
+
+        /* Code Verification */
+        .verification-section {
+            display: none;
+            text-align: center;
+            max-width: 600px;
+        }
+
+        .verification-section.active {
+            display: block;
+        }
+
+        .code-input {
+            width: 100%;
+            padding: 20px;
+            font-size: 24px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            color: #fff;
+            letter-spacing: 5px;
+            margin: 30px 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        .code-input:focus {
+            outline: none;
+            border-color: #fff;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+
+        .submit-btn {
+            padding: 20px 60px;
+            font-size: 24px;
+            font-weight: 900;
+            background: #fff;
+            color: #000;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            position: relative;
+        }
+
+        .submit-btn:hover {
+            background: #000;
+            color: #fff;
+            border: 2px solid #fff;
+            box-shadow: 0 0 40px rgba(255, 255, 255, 0.5);
+            transform: scale(1.05);
+        }
+
+        .submit-btn:active {
+            transform: scale(0.98);
+        }
+
+        .verification-message {
+            margin-top: 30px;
+            font-size: 20px;
+            font-weight: 900;
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .verification-message.success {
+            background: rgba(0, 214, 50, 0.2);
+            border: 2px solid #00d632;
+            color: #00d632;
+        }
+
+        .verification-message.error {
+            background: rgba(255, 0, 0, 0.2);
+            border: 2px solid #ff0000;
+            color: #ff0000;
+        }
+
+        /* Course Content */
+        .course-content {
+            display: none;
+            max-width: 800px;
+            text-align: left;
+        }
+
+        .course-content.active {
+            display: block;
+        }
+
+        .lesson {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 4px solid #fff;
+            padding: 30px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .lesson-title {
+            font-size: 28px;
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+
+        .lesson-content {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #ccc;
+        }
+
+        /* 3D Parallax Logo */
+        .logo-container {
+            position: relative;
+            width: 500px;
+            height: 500px;
+            perspective: 1000px;
+            margin-bottom: 50px;
+            transform-style: preserve-3d;
+        }
+
+        .logo-layer {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease-out;
+        }
+
+        .logo-layer img {
+            width: 400px;
+            height: auto;
+            filter: drop-shadow(0 0 30px rgba(255, 255, 255, 0.8));
+        }
+
+        .logo-layer-1 {
+            transform: translate(-50%, -50%) translateZ(0px);
+        }
+
+        .logo-layer-2 {
+            transform: translate(-50%, -50%) translateZ(-30px);
+            opacity: 0.6;
+        }
+
+        .logo-layer-3 {
+            transform: translate(-50%, -50%) translateZ(-60px);
+            opacity: 0.3;
+        }
+
+        /* Typewriter Title */
+        .title {
+            font-size: 120px;
+            font-weight: 900;
+            letter-spacing: 20px;
+            text-align: center;
+            color: #ffffff;
+            margin-bottom: 30px;
+            overflow: hidden;
+            border-right: 3px solid #ffffff;
+            white-space: nowrap;
+            animation: typing 2s steps(4) 0.5s forwards, blink 0.7s step-end infinite;
+            width: 0;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes blink {
+            50% { border-color: transparent; }
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Subtitle */
+        .subtitle {
+            font-size: 24px;
+            letter-spacing: 8px;
+            opacity: 0;
+            animation: fadeInUp 1s ease 2.5s forwards;
+            text-transform: uppercase;
+            color: #cccccc;
+        }
+
+        .god-of-courses {
+            position: relative;
+            transition: all 0.3s ease;
+            padding: 20px;
+            cursor: pointer;
+            z-index: 5;
+        }
+
+        .god-of-courses:hover {
+            color: #fff;
+            text-shadow: 
+                0 0 10px #ffffff,
+                0 0 20px #ffffff,
+                0 0 40px #ffffff,
+                0 0 80px rgba(255, 255, 255, 0.8),
+                0 0 120px rgba(255, 255, 255, 0.6);
+            transform: scale(1.1);
+        }
+
+        .lightning-bolt {
+            position: absolute;
+            width: 3px;
+            background: linear-gradient(180deg, #ffffff, #f0f0f0, #ffffff);
+            box-shadow: 0 0 10px #ffffff, 0 0 20px rgba(255, 255, 255, 0.8);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Lightning Effects */
+        .lightning {
+            position: fixed;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(180deg, transparent, #ffffff, transparent);
+            opacity: 0;
+            z-index: 1;
+            animation: lightning 4s infinite;
+        }
+
+        .lightning:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .lightning:nth-child(2) { left: 30%; animation-delay: 1.5s; }
+        .lightning:nth-child(3) { left: 50%; animation-delay: 3s; }
+        .lightning:nth-child(4) { left: 70%; animation-delay: 2s; }
+        .lightning:nth-child(5) { left: 90%; animation-delay: 0.5s; }
+
+        @keyframes lightning {
+            0%, 90%, 100% { opacity: 0; }
+            91%, 95% { opacity: 1; }
+        }
+
+        /* Particles */
+        .particle {
+            position: fixed;
+            width: 4px;
+            height: 4px;
+            background: #ffffff;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+        }
+
+        /* Energy Rings */
+        .energy-ring {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            pointer-events: none;
+            animation: expandRing 4s ease-out infinite;
+        }
+
+        .energy-ring:nth-child(1) { animation-delay: 0s; }
+        .energy-ring:nth-child(2) { animation-delay: 1s; }
+        .energy-ring:nth-child(3) { animation-delay: 2s; }
+        .energy-ring:nth-child(4) { animation-delay: 3s; }
+
+        @keyframes expandRing {
+            0% {
+                width: 100px;
+                height: 100px;
+                opacity: 1;
+            }
+            100% {
+                width: 1000px;
+                height: 1000px;
+                opacity: 0;
+            }
+        }
+
+        /* Glitch Effect */
+        .glitch {
+            position: relative;
+            display: inline-block;
+        }
+
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            overflow: hidden;
+        }
+
+        .glitch::before {
+            animation: glitch1 2s infinite;
+            color: #ffffff;
+            z-index: -1;
+        }
+
+        .glitch::after {
+            animation: glitch2 2s infinite;
+            color: #888888;
+            z-index: -2;
+        }
+
+        @keyframes glitch1 {
+            0%, 100% { transform: translate(0); clip-path: inset(0); }
+            20% { transform: translate(-2px, 2px); clip-path: inset(40% 0 40% 0); }
+            40% { transform: translate(-2px, -2px); clip-path: inset(60% 0 20% 0); }
+            60% { transform: translate(2px, 2px); clip-path: inset(20% 0 60% 0); }
+            80% { transform: translate(2px, -2px); clip-path: inset(80% 0 10% 0); }
+        }
+
+        @keyframes glitch2 {
+            0%, 100% { transform: translate(0); clip-path: inset(0); }
+            20% { transform: translate(2px, -2px); clip-path: inset(30% 0 50% 0); }
+            40% { transform: translate(2px, 2px); clip-path: inset(70% 0 10% 0); }
+            60% { transform: translate(-2px, -2px); clip-path: inset(10% 0 70% 0); }
+            80% { transform: translate(-2px, 2px); clip-path: inset(50% 0 30% 0); }
+        }
+
+        /* Scan Lines */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.15),
+                rgba(0, 0, 0, 0.15) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: 3;
+            animation: scan 8s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(10px); }
+        }
+
+        /* CRT Effect */
+        .crt {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 3;
+            background: radial-gradient(ellipse at center, transparent 0%, rgba(255,255,255,0.03) 100%);
+            animation: flicker 0.15s infinite;
+        }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.96; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom Cursors -->
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+
+    <!-- Background Video -->
+    <video id="bg-video" autoplay loop muted playsinline>
+        <source src="https://files.catbox.moe/4gngmw.mp4" type="video/mp4">
+    </video>
+
+    <!-- Background Audio -->
+    <audio id="bg-audio" autoplay loop>
+        <source src="https://files.catbox.moe/srb7v3.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="overlay"></div>
+
+    <!-- Lightning Effects -->
+    <div class="lightning"></div>
+    <div class="lightning"></div>
+    <div class="lightning"></div>
+    <div class="lightning"></div>
+    <div class="lightning"></div>
+
+    <!-- Energy Rings -->
+    <div class="energy-ring"></div>
+    <div class="energy-ring"></div>
+    <div class="energy-ring"></div>
+    <div class="energy-ring"></div>
+
+    <!-- Scan Lines & CRT -->
+    <div class="scanlines"></div>
+    <div class="crt"></div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- 3D Parallax Logo -->
+        <div class="logo-container" id="logoContainer">
+            <div class="logo-layer logo-layer-3">
+                <img src="https://files.catbox.moe/hzz4ir.png" alt="Zeus Logo">
+            </div>
+            <div class="logo-layer logo-layer-2">
+                <img src="https://files.catbox.moe/hzz4ir.png" alt="Zeus Logo">
+            </div>
+            <div class="logo-layer logo-layer-1">
+                <img src="https://files.catbox.moe/hzz4ir.png" alt="Zeus Logo">
+            </div>
+        </div>
+
+        <!-- Title with Typewriter Effect -->
+        <h1 class="title glitch" data-text="ZEUS">ZEUS</h1>
+        <p class="subtitle god-of-courses">GOD OF COURSES</p>
+        
+        <!-- Scroll Indicator -->
+        <div class="scroll-indicator">
+            <div class="scroll-text">Scroll Down</div>
+            <div class="scroll-arrow">↓</div>
+        </div>
+    </div>
+
+    <!-- Course Selection Section -->
+    <div class="course-section" id="courseSection">
+        <h2 class="section-title">SELECT YOUR COURSE</h2>
+        
+        <div class="course-card" onclick="selectCourse('editing')">
+            <div class="course-name">EDITING</div>
+        </div>
+
+        <!-- Payment Section -->
+        <div class="payment-section" id="paymentSection">
+            <h3 class="section-title" style="font-size: 40px;">COMPLETE PAYMENT</h3>
+            <p class="payment-info">Send payment to CashApp to access the course</p>
+            <a href="https://cash.app/$bluefanwave" target="_blank" class="cashapp-link">$bluefanwave</a>
+            <p class="payment-info">After payment, you will receive a code. Enter it below to unlock your course.</p>
+            <button class="submit-btn" onclick="showVerification()">I'VE PAID</button>
+        </div>
+
+        <!-- Code Verification Section -->
+        <div class="verification-section" id="verificationSection">
+            <h3 class="section-title" style="font-size: 40px;">ENTER YOUR CODE</h3>
+            <input type="text" class="code-input" id="codeInput" placeholder="ENTER-CODE-HERE" maxlength="20">
+            <br>
+            <button class="submit-btn" onclick="verifyCode()">SUBMIT</button>
+            <div class="verification-message" id="verificationMessage"></div>
+        </div>
+
+        <!-- Course Content (After Verification) -->
+        <div class="course-content" id="courseContent">
+            <h3 class="section-title">EDITING MASTERY</h3>
+            
+            <div class="lesson">
+                <div class="lesson-title">Lesson 1: Introduction to Professional Editing</div>
+                <div class="lesson-content">
+                    Welcome to the Zeus Editing Mastery course! In this comprehensive module, you'll learn the fundamentals of professional video editing, including timeline management, cutting techniques, and workflow optimization.
+                </div>
+            </div>
+
+            <div class="lesson">
+                <div class="lesson-title">Lesson 2: Advanced Transitions & Effects</div>
+                <div class="lesson-content">
+                    Master the art of seamless transitions, motion graphics, and visual effects that will make your content stand out. Learn industry-standard techniques used by top creators.
+                </div>
+            </div>
+
+            <div class="lesson">
+                <div class="lesson-title">Lesson 3: Color Grading & Correction</div>
+                <div class="lesson-content">
+                    Transform your footage with professional color grading techniques. Understand color theory, LUTs, and how to create cinematic looks that captivate your audience.
+                </div>
+            </div>
+
+            <div class="lesson">
+                <div class="lesson-title">Lesson 4: Audio Mastering</div>
+                <div class="lesson-content">
+                    Learn how to mix and master audio like a pro. Discover techniques for dialogue cleanup, music mixing, sound effects, and creating immersive audio experiences.
+                </div>
+            </div>
+
+            <div class="lesson">
+                <div class="lesson-title">Lesson 5: Export & Optimization</div>
+                <div class="lesson-content">
+                    Master the final step - exporting your projects with optimal settings for different platforms. Learn about codecs, bitrates, and platform-specific requirements.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Custom Cursor
+        const cursor = document.querySelector('.cursor');
+        const follower = document.querySelector('.cursor-follower');
+        
+        let mouseX = 0, mouseY = 0;
+        let followerX = 0, followerY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            cursor.style.left = mouseX + 'px';
+            cursor.style.top = mouseY + 'px';
+        });
+
+        function animateFollower() {
+            followerX += (mouseX - followerX) * 0.1;
+            followerY += (mouseY - followerY) * 0.1;
+            follower.style.left = followerX + 'px';
+            follower.style.top = followerY + 'px';
+            requestAnimationFrame(animateFollower);
+        }
+        animateFollower();
+
+        // 3D Parallax Logo Effect
+        const logoContainer = document.getElementById('logoContainer');
+        const layers = document.querySelectorAll('.logo-layer');
+
+        document.addEventListener('mousemove', (e) => {
+            const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+            const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+
+            layers[0].style.transform = `translate(-50%, -50%) translateZ(0px) rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+            layers[1].style.transform = `translate(-50%, -50%) translateZ(-30px) rotateY(${xAxis * 1.2}deg) rotateX(${yAxis * 1.2}deg)`;
+            layers[2].style.transform = `translate(-50%, -50%) translateZ(-60px) rotateY(${xAxis * 1.4}deg) rotateX(${yAxis * 1.4}deg)`;
+        });
+
+        // Create Particles
+        function createParticles() {
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                particle.style.animationDelay = Math.random() * 2 + 's';
+                document.body.appendChild(particle);
+
+                // Animate particles
+                animateParticle(particle);
+            }
+        }
+
+        function animateParticle(particle) {
+            let y = parseFloat(particle.style.top);
+            function move() {
+                y -= 0.5;
+                if (y < -10) y = 110;
+                particle.style.top = y + '%';
+                requestAnimationFrame(move);
+            }
+            move();
+        }
+
+        createParticles();
+
+        // Audio autoplay fallback (some browsers block autoplay)
+        const audio = document.getElementById('bg-audio');
+        
+        // Try to play immediately
+        audio.play().catch(() => {
+            // If blocked, play on first user interaction
+            document.body.addEventListener('click', () => {
+                audio.play();
+            }, { once: true });
+        });
+
+        // GOD OF COURSES Lightning Effect
+        const godOfCourses = document.querySelector('.god-of-courses');
+        
+        godOfCourses.addEventListener('mouseenter', () => {
+            // Create multiple lightning bolts
+            for (let i = 0; i < 8; i++) {
+                setTimeout(() => {
+                    createLightningBolt();
+                }, i * 50);
+            }
+            
+            // Screen flash
+            document.body.style.filter = 'brightness(1.8)';
+            setTimeout(() => {
+                document.body.style.filter = 'brightness(1)';
+            }, 100);
+        });
+
+        function createLightningBolt() {
+            const bolt = document.createElement('div');
+            bolt.className = 'lightning-bolt';
+            
+            const rect = godOfCourses.getBoundingClientRect();
+            const startX = rect.left + Math.random() * rect.width;
+            const startY = rect.top;
+            
+            bolt.style.left = startX + 'px';
+            bolt.style.top = startY + 'px';
+            bolt.style.height = '0px';
+            
+            document.body.appendChild(bolt);
+            
+            // Animate bolt
+            let height = 0;
+            const maxHeight = Math.random() * 200 + 100;
+            const duration = 200;
+            const startTime = Date.now();
+            
+            function animateBolt() {
+                const elapsed = Date.now() - startTime;
+                const progress = elapsed / duration;
+                
+                if (progress < 1) {
+                    height = maxHeight * progress;
+                    bolt.style.height = height + 'px';
+                    bolt.style.opacity = 1 - progress;
+                    
+                    // Zigzag effect
+                    const zigzag = Math.sin(progress * 20) * 10;
+                    bolt.style.transform = `translateX(${zigzag}px) rotate(${Math.random() * 10 - 5}deg)`;
+                    
+                    requestAnimationFrame(animateBolt);
+                } else {
+                    bolt.remove();
+                }
+            }
+            
+            animateBolt();
+        }
+
+        // Cursor Interaction Effects
+        document.addEventListener('mousedown', () => {
+            cursor.style.transform = 'scale(0.8)';
+            cursor.style.borderColor = '#cccccc';
+        });
+
+        document.addEventListener('mouseup', () => {
+            cursor.style.transform = 'scale(1)';
+            cursor.style.borderColor = '#ffffff';
+        });
+
+        // Random Lightning Flashes
+        setInterval(() => {
+            if (Math.random() > 0.7) {
+                document.body.style.filter = 'brightness(1.5)';
+                setTimeout(() => {
+                    document.body.style.filter = 'brightness(1)';
+                }, 100);
+            }
+        }, 2000);
+
+        // Course Selection Flow
+        let selectedCourse = '';
+
+        function selectCourse(courseName) {
+            selectedCourse = courseName;
+            document.getElementById('paymentSection').classList.add('active');
+            
+            // Force cursor to remain visible
+            document.body.style.cursor = 'auto';
+            
+            // Smooth scroll to payment section
+            setTimeout(() => {
+                document.getElementById('paymentSection').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 100);
+        }
+
+        function showVerification() {
+            document.getElementById('paymentSection').style.display = 'none';
+            document.getElementById('verificationSection').classList.add('active');
+            
+            // Force cursor to remain visible
+            document.body.style.cursor = 'auto';
+            
+            setTimeout(() => {
+                document.getElementById('verificationSection').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 100);
+        }
+
+        function verifyCode() {
+            const code = document.getElementById('codeInput').value.trim().toUpperCase();
+            const message = document.getElementById('verificationMessage');
+            
+            // Force cursor to remain visible
+            document.body.style.cursor = 'auto';
+            
+            // Test codes for demonstration
+            const validCodes = ['ZEUS2024', 'EDITING123', 'TESTCODE'];
+            
+            if (validCodes.includes(code)) {
+                message.textContent = '✓ CODE VERIFIED! ACCESS GRANTED';
+                message.className = 'verification-message success';
+                message.style.display = 'block';
+                
+                // Show course content after 2 seconds
+                setTimeout(() => {
+                    document.getElementById('verificationSection').style.display = 'none';
+                    document.getElementById('courseContent').classList.add('active');
+                    
+                    setTimeout(() => {
+                        document.getElementById('courseContent').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 100);
+                }, 2000);
+            } else {
+                message.textContent = '✗ INVALID CODE. PLEASE TRY AGAIN';
+                message.className = 'verification-message error';
+                message.style.display = 'block';
+                
+                // Shake animation
+                document.getElementById('codeInput').style.animation = 'shake 0.5s';
+                setTimeout(() => {
+                    document.getElementById('codeInput').style.animation = '';
+                }, 500);
+            }
+        }
+
+        // Shake animation for invalid code
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                25% { transform: translateX(-10px); }
+                75% { transform: translateX(10px); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Parallax Video (disabled for no scroll)
+        // window.addEventListener('scroll', () => {
+        //     const scrolled = window.pageYOffset;
+        //     document.getElementById('bg-video').style.transform = `translate(-50%, ${-50 + scrolled * 0.5}%)`;
+        // });
+    </script>
+</body>
+</html>
