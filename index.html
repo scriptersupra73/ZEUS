@@ -639,13 +639,13 @@
         <!-- 3D Parallax Logo -->
         <div class="logo-container" id="logoContainer">
             <div class="logo-layer logo-layer-3">
-                <img src="https://files.catbox.moe/hzz4ir.png" alt="Zeus Logo">
+                <img src="https://i.imgur.com/Vf3B8m7.png" alt="Zeus Logo">
             </div>
             <div class="logo-layer logo-layer-2">
-                <img src="https://files.catbox.moe/hzz4ir.png" alt="Zeus Logo">
+                <img src="https://i.imgur.com/Vf3B8m7.png" alt="Zeus Logo">
             </div>
             <div class="logo-layer logo-layer-1">
-                <img src="https://files.catbox.moe/hzz4ir.png" alt="Zeus Logo">
+                <img src="https://i.imgur.com/Vf3B8m7.png" alt="Zeus Logo">
             </div>
         </div>
 
@@ -751,17 +751,17 @@
         }
         animateFollower();
 
-        // 3D Parallax Logo Effect
+        // 3D Parallax Logo Effect - ENHANCED
         const logoContainer = document.getElementById('logoContainer');
         const layers = document.querySelectorAll('.logo-layer');
 
         document.addEventListener('mousemove', (e) => {
-            const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
-            const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+            const xAxis = (window.innerWidth / 2 - e.clientX) / 20;
+            const yAxis = (window.innerHeight / 2 - e.clientY) / 20;
 
             layers[0].style.transform = `translate(-50%, -50%) translateZ(0px) rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
-            layers[1].style.transform = `translate(-50%, -50%) translateZ(-30px) rotateY(${xAxis * 1.2}deg) rotateX(${yAxis * 1.2}deg)`;
-            layers[2].style.transform = `translate(-50%, -50%) translateZ(-60px) rotateY(${xAxis * 1.4}deg) rotateX(${yAxis * 1.4}deg)`;
+            layers[1].style.transform = `translate(-50%, -50%) translateZ(-50px) rotateY(${xAxis * 1.5}deg) rotateX(${yAxis * 1.5}deg)`;
+            layers[2].style.transform = `translate(-50%, -50%) translateZ(-100px) rotateY(${xAxis * 2}deg) rotateX(${yAxis * 2}deg)`;
         });
 
         // Create Particles
