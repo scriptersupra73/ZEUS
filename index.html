@@ -9,14 +9,11 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            cursor: none !important;
         }
 
-        body {
-            cursor: auto;
-        }
-
-        body * {
-            cursor: auto;
+        body, body * {
+            cursor: none !important;
         }
 
         body {
@@ -30,6 +27,7 @@
 
         html {
             overflow-y: scroll;
+            cursor: none !important;
         }
 
         /* Custom Cursor */
@@ -37,25 +35,28 @@
             position: fixed;
             width: 20px;
             height: 20px;
-            border: 2px solid #ffffff;
+            border: 3px solid #ffffff;
             border-radius: 50%;
             pointer-events: none;
-            z-index: 10000;
-            transition: all 0.1s ease;
-            box-shadow: 0 0 20px #ffffff, 0 0 40px rgba(255, 255, 255, 0.6);
-            display: none;
+            z-index: 999999;
+            box-shadow: 0 0 30px #ffffff, 0 0 60px rgba(255, 255, 255, 0.8);
+            transform: translate(-50%, -50%);
+            transition: none;
+            display: block !important;
+            opacity: 1 !important;
         }
 
         .cursor-follower {
             position: fixed;
-            width: 40px;
-            height: 40px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            width: 50px;
+            height: 50px;
+            border: 2px solid rgba(255, 255, 255, 0.5);
             border-radius: 50%;
             pointer-events: none;
-            z-index: 9999;
-            transition: all 0.15s ease;
-            display: none;
+            z-index: 999998;
+            transform: translate(-50%, -50%);
+            display: block !important;
+            opacity: 1 !important;
         }
 
         /* Video Background */
@@ -157,7 +158,6 @@
             border: 2px solid rgba(255, 255, 255, 0.2);
             padding: 40px 60px;
             border-radius: 10px;
-            cursor: pointer;
             transition: all 0.3s ease;
             backdrop-filter: blur(10px);
             margin-bottom: 30px;
@@ -185,150 +185,105 @@
         .payment-section {
             display: none;
             text-align: center;
-            max-width: 600px;
+            max-width: 700px;
         }
 
         .payment-section.active {
             display: block;
         }
 
-        .cashapp-link {
+        .price-tag {
+            font-size: 72px;
+            font-weight: 900;
+            color: #00d632;
+            margin: 30px 0;
+            text-shadow: 0 0 30px rgba(0, 214, 50, 0.6);
+            letter-spacing: 5px;
+        }
+
+        .cashapp-button {
             display: inline-block;
             font-size: 48px;
             font-weight: 900;
-            color: #00d632;
+            color: #fff;
+            background: #00d632;
             text-decoration: none;
-            padding: 20px 40px;
+            padding: 30px 60px;
             border: 3px solid #00d632;
-            border-radius: 10px;
+            border-radius: 15px;
             margin: 30px 0;
             transition: all 0.3s ease;
             letter-spacing: 3px;
+            box-shadow: 0 0 40px rgba(0, 214, 50, 0.6);
         }
 
-        .cashapp-link:hover {
-            background: #00d632;
+        .cashapp-button:hover {
+            background: #00ff3c;
+            border-color: #00ff3c;
             color: #000;
-            box-shadow: 0 0 40px rgba(0, 214, 50, 0.6);
+            box-shadow: 0 0 60px rgba(0, 214, 50, 0.8);
             transform: scale(1.05);
         }
 
         .payment-info {
-            font-size: 18px;
+            font-size: 20px;
             color: #999;
             margin: 20px 0;
             line-height: 1.8;
         }
 
-        /* Code Verification */
-        .verification-section {
-            display: none;
-            text-align: center;
-            max-width: 600px;
-        }
-
-        .verification-section.active {
-            display: block;
-        }
-
-        .code-input {
-            width: 100%;
-            padding: 20px;
-            font-size: 24px;
-            text-align: center;
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid rgba(255, 255, 255, 0.3);
+        .payment-instructions {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            padding: 30px;
             border-radius: 10px;
-            color: #fff;
-            letter-spacing: 5px;
             margin: 30px 0;
-            font-family: 'Courier New', monospace;
-        }
-
-        .code-input:focus {
-            outline: none;
-            border-color: #fff;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
-        }
-
-        .submit-btn {
-            padding: 20px 60px;
-            font-size: 24px;
-            font-weight: 900;
-            background: #fff;
-            color: #000;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            position: relative;
-        }
-
-        .submit-btn:hover {
-            background: #000;
-            color: #fff;
-            border: 2px solid #fff;
-            box-shadow: 0 0 40px rgba(255, 255, 255, 0.5);
-            transform: scale(1.05);
-        }
-
-        .submit-btn:active {
-            transform: scale(0.98);
-        }
-
-        .verification-message {
-            margin-top: 30px;
-            font-size: 20px;
-            font-weight: 900;
-            padding: 20px;
-            border-radius: 10px;
-            display: none;
-        }
-
-        .verification-message.success {
-            background: rgba(0, 214, 50, 0.2);
-            border: 2px solid #00d632;
-            color: #00d632;
-        }
-
-        .verification-message.error {
-            background: rgba(255, 0, 0, 0.2);
-            border: 2px solid #ff0000;
-            color: #ff0000;
-        }
-
-        /* Course Content */
-        .course-content {
-            display: none;
-            max-width: 800px;
             text-align: left;
         }
 
-        .course-content.active {
-            display: block;
-        }
-
-        .lesson {
-            background: rgba(255, 255, 255, 0.05);
-            border-left: 4px solid #fff;
-            padding: 30px;
-            margin: 20px 0;
-            border-radius: 5px;
-        }
-
-        .lesson-title {
+        .payment-instructions h4 {
             font-size: 28px;
-            font-weight: 900;
-            color: #fff;
+            color: #00d632;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .payment-instructions ol {
+            font-size: 18px;
+            line-height: 2;
+            color: #ccc;
+            padding-left: 30px;
+        }
+
+        .payment-instructions ol li {
             margin-bottom: 15px;
         }
 
-        .lesson-content {
-            font-size: 16px;
-            line-height: 1.8;
-            color: #ccc;
+        .payment-instructions strong {
+            color: #fff;
+        }
+
+        .ticket-button {
+            display: inline-block;
+            padding: 25px 70px;
+            font-size: 28px;
+            font-weight: 900;
+            background: #fff;
+            color: #000;
+            border: 3px solid #fff;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-top: 30px;
+            text-decoration: none;
+        }
+
+        .ticket-button:hover {
+            background: #000;
+            color: #fff;
+            box-shadow: 0 0 40px rgba(255, 255, 255, 0.5);
+            transform: scale(1.05);
         }
 
         /* 3D Parallax Logo */
@@ -336,7 +291,7 @@
             position: relative;
             width: 500px;
             height: 500px;
-            perspective: 2000px;
+            perspective: 1000px;
             margin-bottom: 50px;
             transform-style: preserve-3d;
         }
@@ -345,60 +300,34 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
-            transition: transform 0.05s ease-out;
+            width: 400px;
+            height: 400px;
             transform-style: preserve-3d;
             will-change: transform;
+            transition: transform 0.05s ease-out;
         }
 
         .logo-layer img {
-            width: 400px;
+            width: 100%;
             height: auto;
+            display: block;
         }
 
         .logo-layer-1 {
-            transform: translate(-50%, -50%) translateZ(0px);
             filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.8));
+            z-index: 3;
         }
 
         .logo-layer-2 {
-            transform: translate(-50%, -50%) translateZ(-50px);
             opacity: 0.7;
             filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.6));
+            z-index: 2;
         }
 
         .logo-layer-3 {
-            transform: translate(-50%, -50%) translateZ(-100px);
             opacity: 0.4;
             filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.4));
-        }
-
-        /* Typewriter Title */
-        .title {
-            font-size: 120px;
-            font-weight: 900;
-            letter-spacing: 20px;
-            text-align: center;
-            color: #ffffff;
-            margin-bottom: 30px;
-            overflow: hidden;
-            white-space: nowrap;
-            text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
-        }
-
-        @keyframes typing {
-            from { width: 0; }
-            to { width: 100%; }
-        }
-
-        @keyframes blink {
-            50% { border-color: transparent; }
-        }
-
-        @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+            z-index: 1;
         }
 
         /* Subtitle */
@@ -414,7 +343,6 @@
             position: relative;
             transition: all 0.3s ease;
             padding: 20px;
-            cursor: pointer;
             z-index: 5;
         }
 
@@ -437,17 +365,6 @@
             opacity: 0;
             pointer-events: none;
             z-index: 100;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
         }
 
         /* Lightning Effects */
@@ -497,11 +414,6 @@
             animation: expandRing 4s ease-out infinite;
         }
 
-        .energy-ring:nth-child(1) { animation-delay: 0s; }
-        .energy-ring:nth-child(2) { animation-delay: 1s; }
-        .energy-ring:nth-child(3) { animation-delay: 2s; }
-        .energy-ring:nth-child(4) { animation-delay: 3s; }
-
         @keyframes expandRing {
             0% {
                 width: 100px;
@@ -513,52 +425,6 @@
                 height: 1000px;
                 opacity: 0;
             }
-        }
-
-        /* Glitch Effect */
-        .glitch {
-            position: relative;
-            display: inline-block;
-        }
-
-        .glitch::before,
-        .glitch::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: transparent;
-            overflow: hidden;
-        }
-
-        .glitch::before {
-            animation: glitch1 2s infinite;
-            color: #ffffff;
-            z-index: -1;
-        }
-
-        .glitch::after {
-            animation: glitch2 2s infinite;
-            color: #888888;
-            z-index: -2;
-        }
-
-        @keyframes glitch1 {
-            0%, 100% { transform: translate(0); clip-path: inset(0); }
-            20% { transform: translate(-2px, 2px); clip-path: inset(40% 0 40% 0); }
-            40% { transform: translate(-2px, -2px); clip-path: inset(60% 0 20% 0); }
-            60% { transform: translate(2px, 2px); clip-path: inset(20% 0 60% 0); }
-            80% { transform: translate(2px, -2px); clip-path: inset(80% 0 10% 0); }
-        }
-
-        @keyframes glitch2 {
-            0%, 100% { transform: translate(0); clip-path: inset(0); }
-            20% { transform: translate(2px, -2px); clip-path: inset(30% 0 50% 0); }
-            40% { transform: translate(2px, 2px); clip-path: inset(70% 0 10% 0); }
-            60% { transform: translate(-2px, -2px); clip-path: inset(10% 0 70% 0); }
-            80% { transform: translate(-2px, 2px); clip-path: inset(50% 0 30% 0); }
         }
 
         /* Scan Lines */
@@ -606,8 +472,8 @@
 </head>
 <body>
     <!-- Custom Cursors -->
-    <div class="cursor"></div>
-    <div class="cursor-follower"></div>
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-follower" id="follower"></div>
 
     <!-- Background Video -->
     <video id="bg-video" autoplay loop muted playsinline>
@@ -615,9 +481,8 @@
     </video>
 
     <!-- Background Audio -->
-    <audio id="bg-audio" loop preload="auto" playsinline>
+    <audio id="bg-audio" autoplay loop preload="auto">
         <source src="https://files.catbox.moe/cz3i19.mp3" type="audio/mpeg">
-        <source src="https://files.catbox.moe/cz3i19.mp3" type="audio/mp3">
     </audio>
 
     <div class="overlay"></div>
@@ -643,18 +508,18 @@
     <div class="container">
         <!-- 3D Parallax Logo -->
         <div class="logo-container" id="logoContainer">
-            <div class="logo-layer logo-layer-3">
+            <div class="logo-layer logo-layer-3" id="layer3">
                 <img src="https://i.imgur.com/Vf3B8m7.png" alt="Zeus Logo">
             </div>
-            <div class="logo-layer logo-layer-2">
+            <div class="logo-layer logo-layer-2" id="layer2">
                 <img src="https://i.imgur.com/Vf3B8m7.png" alt="Zeus Logo">
             </div>
-            <div class="logo-layer logo-layer-1">
+            <div class="logo-layer logo-layer-1" id="layer1">
                 <img src="https://i.imgur.com/Vf3B8m7.png" alt="Zeus Logo">
             </div>
         </div>
 
-        <!-- Title with Typewriter Effect -->
+        <!-- Title -->
         <p class="subtitle god-of-courses">GOD OF COURSES</p>
         
         <!-- Scroll Indicator -->
@@ -674,70 +539,63 @@
 
         <!-- Payment Section -->
         <div class="payment-section" id="paymentSection">
-            <h3 class="section-title" style="font-size: 40px;">COMPLETE PAYMENT</h3>
-            <p class="payment-info">Send payment to CashApp to access the course</p>
-            <a href="https://cash.app/$bluefanwave" target="_blank" class="cashapp-link">$bluefanwave</a>
-            <p class="payment-info">After payment, you will receive a code. Enter it below to unlock your course.</p>
-            <button class="submit-btn" onclick="showVerification()">I'VE PAID</button>
-        </div>
-
-        <!-- Code Verification Section -->
-        <div class="verification-section" id="verificationSection">
-            <h3 class="section-title" style="font-size: 40px;">ENTER YOUR CODE</h3>
-            <input type="text" class="code-input" id="codeInput" placeholder="ENTER-CODE-HERE" maxlength="20">
-            <br>
-            <button class="submit-btn" onclick="verifyCode()">SUBMIT</button>
-            <div class="verification-message" id="verificationMessage"></div>
-        </div>
-
-        <!-- Course Content (After Verification) -->
-        <div class="course-content" id="courseContent">
-            <h3 class="section-title">EDITING MASTERY</h3>
+            <h3 class="section-title" style="font-size: 50px;">EDITING COURSE</h3>
+            <div class="price-tag">$10</div>
             
-            <div class="lesson">
-                <div class="lesson-title">Lesson 1: Introduction to Professional Editing</div>
-                <div class="lesson-content">
-                    Welcome to the Zeus Editing Mastery course! In this comprehensive module, you'll learn the fundamentals of professional video editing, including timeline management, cutting techniques, and workflow optimization.
-                </div>
+            <p class="payment-info" style="font-size: 24px; color: #fff;">Click below to pay via CashApp</p>
+            
+            <a href="https://cash.app/$bluefanwave/10" target="_blank" class="cashapp-button" onclick="handlePaymentClick()">
+                PAY $10 NOW
+            </a>
+            
+            <div class="payment-instructions">
+                <h4><img src="https://cdn3.emoji.gg/emojis/259203-rules.png" width="32px" height="32px" alt="Rules" style="vertical-align: middle; margin-right: 10px;">PAYMENT INSTRUCTIONS</h4>
+                <ol>
+                    <li><strong>Click the green button above</strong> to send <strong>$10</strong> to <strong>$bluefanwave</strong> on CashApp</li>
+                    <li>After payment, <strong>you will receive a unique code</strong></li>
+                    <li><strong>Open a ticket</strong> with your code to verify your purchase</li>
+                    <li>Once verified, you'll get <strong>instant access</strong> to the Editing Mastery course</li>
+                </ol>
             </div>
-
-            <div class="lesson">
-                <div class="lesson-title">Lesson 2: Advanced Transitions & Effects</div>
-                <div class="lesson-content">
-                    Master the art of seamless transitions, motion graphics, and visual effects that will make your content stand out. Learn industry-standard techniques used by top creators.
-                </div>
-            </div>
-
-            <div class="lesson">
-                <div class="lesson-title">Lesson 3: Color Grading & Correction</div>
-                <div class="lesson-content">
-                    Transform your footage with professional color grading techniques. Understand color theory, LUTs, and how to create cinematic looks that captivate your audience.
-                </div>
-            </div>
-
-            <div class="lesson">
-                <div class="lesson-title">Lesson 4: Audio Mastering</div>
-                <div class="lesson-content">
-                    Learn how to mix and master audio like a pro. Discover techniques for dialogue cleanup, music mixing, sound effects, and creating immersive audio experiences.
-                </div>
-            </div>
-
-            <div class="lesson">
-                <div class="lesson-title">Lesson 5: Export & Optimization</div>
-                <div class="lesson-content">
-                    Master the final step - exporting your projects with optimal settings for different platforms. Learn about codecs, bitrates, and platform-specific requirements.
-                </div>
-            </div>
+            
+            <a href="YOUR_DISCORD_SERVER_INVITE_LINK_HERE" target="_blank" class="ticket-button">
+                OPEN TICKET
+            </a>
+            
+            <p class="payment-info" style="margin-top: 30px; font-size: 16px;">
+                <img src="https://cdn3.emoji.gg/emojis/153755-warn.png" width="24px" height="24px" alt="Warn" style="vertical-align: middle; margin-right: 8px;"><strong>IMPORTANT:</strong> Make sure you paid exactly <strong>$10</strong> before opening a ticket
+            </p>
         </div>
     </div>
 
     <script>
-        // Custom Cursor
-        const cursor = document.querySelector('.cursor');
-        const follower = document.querySelector('.cursor-follower');
+        // ============= AUDIO - AUTOPLAY ON PAGE LOAD =============
+        const audio = document.getElementById('bg-audio');
         
-        let mouseX = 0, mouseY = 0;
-        let followerX = 0, followerY = 0;
+        function playAudio() {
+            audio.volume = 1.0;
+            audio.play().catch(() => {
+                // If autoplay fails, play on first interaction
+                document.addEventListener('click', () => {
+                    audio.play();
+                }, { once: true });
+            });
+        }
+        
+        // Try to play immediately
+        playAudio();
+        
+        // Also try after page loads
+        window.addEventListener('load', playAudio);
+
+        // ============= CUSTOM CURSOR =============
+        const cursor = document.getElementById('cursor');
+        const follower = document.getElementById('follower');
+        
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+        let followerX = mouseX;
+        let followerY = mouseY;
 
         document.addEventListener('mousemove', (e) => {
             mouseX = e.clientX;
@@ -746,66 +604,84 @@
             cursor.style.top = mouseY + 'px';
         });
 
-        function animateFollower() {
-            followerX += (mouseX - followerX) * 0.1;
-            followerY += (mouseY - followerY) * 0.1;
+        function updateFollower() {
+            const dx = mouseX - followerX;
+            const dy = mouseY - followerY;
+            
+            followerX += dx * 0.15;
+            followerY += dy * 0.15;
+            
             follower.style.left = followerX + 'px';
             follower.style.top = followerY + 'px';
-            requestAnimationFrame(animateFollower);
+            
+            requestAnimationFrame(updateFollower);
         }
-        animateFollower();
+        updateFollower();
 
-        // 3D Parallax Logo Effect - WORKING VERSION
-        const logoContainer = document.getElementById('logoContainer');
-        const logoLayers = document.querySelectorAll('.logo-layer');
+        document.addEventListener('mousedown', () => {
+            cursor.style.transform = 'translate(-50%, -50%) scale(0.7)';
+        });
 
-        let mouseX = 0;
-        let mouseY = 0;
+        document.addEventListener('mouseup', () => {
+            cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+        });
+
+        // ============= 3D PARALLAX =============
+        const layer1 = document.getElementById('layer1');
+        const layer2 = document.getElementById('layer2');
+        const layer3 = document.getElementById('layer3');
 
         document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-            
             const centerX = window.innerWidth / 2;
             const centerY = window.innerHeight / 2;
             
-            const moveX = (mouseX - centerX) / 15;
-            const moveY = (mouseY - centerY) / 15;
-
-            // Apply transforms to each layer with increasing depth
-            logoLayers[0].style.transform = `translate(-50%, -50%) translateZ(0px) rotateY(${moveX}deg) rotateX(${-moveY}deg)`;
-            logoLayers[1].style.transform = `translate(-50%, -50%) translateZ(-50px) rotateY(${moveX * 1.5}deg) rotateX(${-moveY * 1.5}deg)`;
-            logoLayers[2].style.transform = `translate(-50%, -50%) translateZ(-100px) rotateY(${moveX * 2}deg) rotateX(${-moveY * 2}deg)`;
+            const deltaX = (e.clientX - centerX) / centerX;
+            const deltaY = (e.clientY - centerY) / centerY;
+            
+            const rotateX = deltaY * 20;
+            const rotateY = deltaX * 20;
+            
+            layer1.style.transform = `
+                translate(-50%, -50%)
+                translateZ(50px)
+                rotateX(${-rotateX * 0.5}deg)
+                rotateY(${rotateY * 0.5}deg)
+            `;
+            
+            layer2.style.transform = `
+                translate(-50%, -50%)
+                translateZ(0px)
+                rotateX(${-rotateX}deg)
+                rotateY(${rotateY}deg)
+            `;
+            
+            layer3.style.transform = `
+                translate(-50%, -50%)
+                translateZ(-50px)
+                rotateX(${-rotateX * 1.5}deg)
+                rotateY(${rotateY * 1.5}deg)
+            `;
         });
 
-        // Reset on mouse leave
-        document.addEventListener('mouseleave', () => {
-            logoLayers[0].style.transform = `translate(-50%, -50%) translateZ(0px) rotateY(0deg) rotateX(0deg)`;
-            logoLayers[1].style.transform = `translate(-50%, -50%) translateZ(-50px) rotateY(0deg) rotateX(0deg)`;
-            logoLayers[2].style.transform = `translate(-50%, -50%) translateZ(-100px) rotateY(0deg) rotateX(0deg)`;
-        });
-
-        // Create Particles
+        // ============= PARTICLES =============
         function createParticles() {
             for (let i = 0; i < 50; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
                 particle.style.left = Math.random() * 100 + '%';
                 particle.style.top = Math.random() * 100 + '%';
-                particle.style.animationDuration = (Math.random() * 3 + 2) + 's';
-                particle.style.animationDelay = Math.random() * 2 + 's';
                 document.body.appendChild(particle);
-
-                // Animate particles
                 animateParticle(particle);
             }
         }
 
         function animateParticle(particle) {
             let y = parseFloat(particle.style.top);
+            const speed = Math.random() * 0.3 + 0.2;
+            
             function move() {
-                y -= 0.5;
-                if (y < -10) y = 110;
+                y -= speed;
+                if (y < -5) y = 105;
                 particle.style.top = y + '%';
                 requestAnimationFrame(move);
             }
@@ -814,121 +690,12 @@
 
         createParticles();
 
-        // AUDIO - MAXIMUM FORCE PLAYBACK
-        const audio = document.getElementById('bg-audio');
-        
-        function startAudio() {
-            audio.muted = false;
-            audio.volume = 1.0;
-            
-            const promise = audio.play();
-            if (promise !== undefined) {
-                promise.then(() => {
-                    console.log('✓✓✓ AUDIO IS PLAYING AT 100% VOLUME ✓✓✓');
-                }).catch(err => {
-                    console.log('Audio blocked - interact with page:', err);
-                });
-            }
-        }
-        
-        // Start immediately
-        startAudio();
-        
-        // Start on EVERY possible user interaction
-        ['click', 'touchstart', 'touchend', 'mousedown', 'mouseup', 'keydown', 'scroll', 'mousemove'].forEach(evt => {
-            document.addEventListener(evt, function handler() {
-                startAudio();
-                document.removeEventListener(evt, handler);
-            });
-        });
-        
-        // Try repeatedly for first 10 seconds
-        for (let i = 0; i < 20; i++) {
-            setTimeout(startAudio, i * 500);
-        }
-        
-        // Try on visibility change
-        document.addEventListener('visibilitychange', startAudio);
-        
-        // Try when page loads
-        window.addEventListener('load', () => {
-            setTimeout(startAudio, 100);
-            setTimeout(startAudio, 500);
-            setTimeout(startAudio, 1000);
-        }); = audio.play();
-            
-            if (playPromise !== undefined) {
-                playPromise.then(() => {
-                    console.log('Audio playing successfully at max volume');
-                }).catch(error => {
-                    console.log('Autoplay prevented, waiting for user interaction:', error);
-                    // Add click listener to play on first interaction
-                    const playOnInteraction = () => {
-                        audio.play().then(() => {
-                            console.log('Audio started after user interaction at max volume');
-                        }).catch(err => {
-                            console.error('Audio play failed:', err);
-                        });
-                        document.removeEventListener('click', playOnInteraction);
-                        document.removeEventListener('touchstart', playOnInteraction);
-                        document.removeEventListener('keydown', playOnInteraction);
-                    };
-                    
-                    document.addEventListener('click', playOnInteraction);
-                    document.addEventListener('touchstart', playOnInteraction);
-                    document.addEventListener('keydown', playOnInteraction);
-                });
-            }
-        }
-        
-        // Try to play immediately
-        tryPlayAudio();
-        
-        // Also try when page is fully loaded
-        window.addEventListener('load', () => {
-            setTimeout(tryPlayAudio, 100);
-        });
-            if (playPromise !== undefined) {
-                playPromise.then(() => {
-                    console.log('Audio playing successfully at max volume');
-                }).catch(error => {
-                    console.log('Autoplay prevented, waiting for user interaction:', error);
-                    // Add click listener to play on first interaction
-                    const playOnInteraction = () => {
-                        audio.play().then(() => {
-                            console.log('Audio started after user interaction at max volume');
-                        }).catch(err => {
-                            console.error('Audio play failed:', err);
-                        });
-                        document.removeEventListener('click', playOnInteraction);
-                        document.removeEventListener('touchstart', playOnInteraction);
-                        document.removeEventListener('keydown', playOnInteraction);
-                    };
-                    
-                    document.addEventListener('click', playOnInteraction);
-                    document.addEventListener('touchstart', playOnInteraction);
-                    document.addEventListener('keydown', playOnInteraction);
-                });
-            }
-        }
-        
-        // Try to play immediately
-        tryPlayAudio();
-        
-        // Also try when page is fully loaded
-        window.addEventListener('load', () => {
-            setTimeout(tryPlayAudio, 100);
-        });
-
-        // GOD OF COURSES Lightning Effect
+        // ============= LIGHTNING =============
         const godOfCourses = document.querySelector('.god-of-courses');
         
         godOfCourses.addEventListener('mouseenter', () => {
-            // Create multiple lightning bolts
             for (let i = 0; i < 8; i++) {
-                setTimeout(() => {
-                    createLightningBolt();
-                }, i * 50);
+                setTimeout(() => createLightningBolt(), i * 50);
             }
         });
 
@@ -946,7 +713,6 @@
             
             document.body.appendChild(bolt);
             
-            // Animate bolt
             let height = 0;
             const maxHeight = Math.random() * 200 + 100;
             const duration = 200;
@@ -961,7 +727,6 @@
                     bolt.style.height = height + 'px';
                     bolt.style.opacity = 1 - progress;
                     
-                    // Zigzag effect
                     const zigzag = Math.sin(progress * 20) * 10;
                     bolt.style.transform = `translateX(${zigzag}px) rotate(${Math.random() * 10 - 5}deg)`;
                     
@@ -974,92 +739,18 @@
             animateBolt();
         }
 
-        // Cursor Interaction Effects
-        document.addEventListener('mousedown', () => {
-            cursor.style.transform = 'scale(0.8)';
-            cursor.style.borderColor = '#cccccc';
-        });
-
-        document.addEventListener('mouseup', () => {
-            cursor.style.transform = 'scale(1)';
-            cursor.style.borderColor = '#ffffff';
-        });
-
-        // Course Selection Flow
-        let selectedCourse = '';
-
+        // ============= COURSE FLOW =============
         function selectCourse(courseName) {
-            selectedCourse = courseName;
             document.getElementById('paymentSection').classList.add('active');
             
-            // Force cursor to remain visible
-            document.body.style.cursor = 'auto';
-            
-            // Smooth scroll to payment section
             setTimeout(() => {
                 document.getElementById('paymentSection').scrollIntoView({ behavior: 'smooth', block: 'center' });
             }, 100);
         }
 
-        function showVerification() {
-            document.getElementById('paymentSection').style.display = 'none';
-            document.getElementById('verificationSection').classList.add('active');
-            
-            // Force cursor to remain visible
-            document.body.style.cursor = 'auto';
-            
-            setTimeout(() => {
-                document.getElementById('verificationSection').scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }, 100);
+        function handlePaymentClick() {
+            console.log('Payment button clicked - redirecting to CashApp for $10 payment');
         }
-
-        function verifyCode() {
-            const code = document.getElementById('codeInput').value.trim().toUpperCase();
-            const message = document.getElementById('verificationMessage');
-            
-            // Force cursor to remain visible
-            document.body.style.cursor = 'auto';
-            
-            // Test codes for demonstration
-            const validCodes = ['ZEUS2024', 'EDITING123', 'TESTCODE'];
-            
-            if (validCodes.includes(code)) {
-                message.textContent = '✓ CODE VERIFIED! ACCESS GRANTED';
-                message.className = 'verification-message success';
-                message.style.display = 'block';
-                
-                // Show course content after 2 seconds
-                setTimeout(() => {
-                    document.getElementById('verificationSection').style.display = 'none';
-                    document.getElementById('courseContent').classList.add('active');
-                    
-                    setTimeout(() => {
-                        document.getElementById('courseContent').scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }, 100);
-                }, 2000);
-            } else {
-                message.textContent = '✗ INVALID CODE. PLEASE TRY AGAIN';
-                message.className = 'verification-message error';
-                message.style.display = 'block';
-                
-                // Shake animation
-                document.getElementById('codeInput').style.animation = 'shake 0.5s';
-                setTimeout(() => {
-                    document.getElementById('codeInput').style.animation = '';
-                }, 500);
-            }
-        }
-
-        // Shake animation for invalid code
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes shake {
-                0%, 100% { transform: translateX(0); }
-                25% { transform: translateX(-10px); }
-                75% { transform: translateX(10px); }
-            }
-        `;
-        document.head.appendChild(style);
     </script>
 </body>
 </html>
