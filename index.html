@@ -336,7 +336,7 @@
             position: relative;
             width: 500px;
             height: 500px;
-            perspective: 1000px;
+            perspective: 2000px;
             margin-bottom: 50px;
             transform-style: preserve-3d;
         }
@@ -346,27 +346,31 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            transition: transform 0.1s ease-out;
+            transition: transform 0.05s ease-out;
+            transform-style: preserve-3d;
+            will-change: transform;
         }
 
         .logo-layer img {
             width: 400px;
             height: auto;
-            filter: drop-shadow(0 0 30px rgba(255, 255, 255, 0.8));
         }
 
         .logo-layer-1 {
             transform: translate(-50%, -50%) translateZ(0px);
+            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.8));
         }
 
         .logo-layer-2 {
-            transform: translate(-50%, -50%) translateZ(-30px);
-            opacity: 0.6;
+            transform: translate(-50%, -50%) translateZ(-50px);
+            opacity: 0.7;
+            filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.6));
         }
 
         .logo-layer-3 {
-            transform: translate(-50%, -50%) translateZ(-60px);
-            opacity: 0.3;
+            transform: translate(-50%, -50%) translateZ(-100px);
+            opacity: 0.4;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.4));
         }
 
         /* Typewriter Title */
@@ -611,8 +615,9 @@
     </video>
 
     <!-- Background Audio -->
-    <audio id="bg-audio" loop preload="auto">
+    <audio id="bg-audio" loop preload="auto" playsinline>
         <source src="https://files.catbox.moe/cz3i19.mp3" type="audio/mpeg">
+        <source src="https://files.catbox.moe/cz3i19.mp3" type="audio/mp3">
     </audio>
 
     <div class="overlay"></div>
@@ -650,7 +655,6 @@
         </div>
 
         <!-- Title with Typewriter Effect -->
-        <h1 class="title glitch" data-text="ZEUS">ZEUS</h1>
         <p class="subtitle god-of-courses">GOD OF COURSES</p>
         
         <!-- Scroll Indicator -->
@@ -751,17 +755,34 @@
         }
         animateFollower();
 
-        // 3D Parallax Logo Effect - ENHANCED
+        // 3D Parallax Logo Effect - WORKING VERSION
         const logoContainer = document.getElementById('logoContainer');
-        const layers = document.querySelectorAll('.logo-layer');
+        const logoLayers = document.querySelectorAll('.logo-layer');
+
+        let mouseX = 0;
+        let mouseY = 0;
 
         document.addEventListener('mousemove', (e) => {
-            const xAxis = (window.innerWidth / 2 - e.clientX) / 20;
-            const yAxis = (window.innerHeight / 2 - e.clientY) / 20;
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 2;
+            
+            const moveX = (mouseX - centerX) / 15;
+            const moveY = (mouseY - centerY) / 15;
 
-            layers[0].style.transform = `translate(-50%, -50%) translateZ(0px) rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
-            layers[1].style.transform = `translate(-50%, -50%) translateZ(-50px) rotateY(${xAxis * 1.5}deg) rotateX(${yAxis * 1.5}deg)`;
-            layers[2].style.transform = `translate(-50%, -50%) translateZ(-100px) rotateY(${xAxis * 2}deg) rotateX(${yAxis * 2}deg)`;
+            // Apply transforms to each layer with increasing depth
+            logoLayers[0].style.transform = `translate(-50%, -50%) translateZ(0px) rotateY(${moveX}deg) rotateX(${-moveY}deg)`;
+            logoLayers[1].style.transform = `translate(-50%, -50%) translateZ(-50px) rotateY(${moveX * 1.5}deg) rotateX(${-moveY * 1.5}deg)`;
+            logoLayers[2].style.transform = `translate(-50%, -50%) translateZ(-100px) rotateY(${moveX * 2}deg) rotateX(${-moveY * 2}deg)`;
+        });
+
+        // Reset on mouse leave
+        document.addEventListener('mouseleave', () => {
+            logoLayers[0].style.transform = `translate(-50%, -50%) translateZ(0px) rotateY(0deg) rotateX(0deg)`;
+            logoLayers[1].style.transform = `translate(-50%, -50%) translateZ(-50px) rotateY(0deg) rotateX(0deg)`;
+            logoLayers[2].style.transform = `translate(-50%, -50%) translateZ(-100px) rotateY(0deg) rotateX(0deg)`;
         });
 
         // Create Particles
@@ -793,48 +814,48 @@
 
         createParticles();
 
-        // Audio with better buffering and error handling
+        // AUDIO - MAXIMUM FORCE PLAYBACK
         const audio = document.getElementById('bg-audio');
-        audio.volume = 1.0;
         
-        // Preload and buffer audio properly
-        audio.load();
-        
-        // Better playback handling
-        let audioPlaying = false;
-        
-        function tryPlayAudio() {
-            if (audioPlaying) return;
+        function startAudio() {
+            audio.muted = false;
+            audio.volume = 1.0;
             
-            audio.play().then(() => {
-                audioPlaying = true;
-                console.log('Audio playing at max volume');
-            }).catch(error => {
-                console.log('Autoplay blocked, click anywhere to start audio');
-                
-                const startAudio = () => {
-                    if (!audioPlaying) {
-                        audio.play().then(() => {
-                            audioPlaying = true;
-                            console.log('Audio started');
-                        }).catch(err => console.error('Play failed:', err));
-                    }
-                };
-                
-                // Listen for any interaction
-                document.addEventListener('click', startAudio, { once: true });
-                document.addEventListener('touchstart', startAudio, { once: true });
-                document.addEventListener('keydown', startAudio, { once: true });
-                document.addEventListener('scroll', startAudio, { once: true });
-            });
+            const promise = audio.play();
+            if (promise !== undefined) {
+                promise.then(() => {
+                    console.log('✓✓✓ AUDIO IS PLAYING AT 100% VOLUME ✓✓✓');
+                }).catch(err => {
+                    console.log('Audio blocked - interact with page:', err);
+                });
+            }
         }
         
-        // Try multiple times to ensure audio starts
-        setTimeout(tryPlayAudio, 100);
-        setTimeout(tryPlayAudio, 500);
-        setTimeout(tryPlayAudio, 1000);
+        // Start immediately
+        startAudio();
         
-        window.addEventListener('load', tryPlayAudio); = audio.play();
+        // Start on EVERY possible user interaction
+        ['click', 'touchstart', 'touchend', 'mousedown', 'mouseup', 'keydown', 'scroll', 'mousemove'].forEach(evt => {
+            document.addEventListener(evt, function handler() {
+                startAudio();
+                document.removeEventListener(evt, handler);
+            });
+        });
+        
+        // Try repeatedly for first 10 seconds
+        for (let i = 0; i < 20; i++) {
+            setTimeout(startAudio, i * 500);
+        }
+        
+        // Try on visibility change
+        document.addEventListener('visibilitychange', startAudio);
+        
+        // Try when page loads
+        window.addEventListener('load', () => {
+            setTimeout(startAudio, 100);
+            setTimeout(startAudio, 500);
+            setTimeout(startAudio, 1000);
+        }); = audio.play();
             
             if (playPromise !== undefined) {
                 playPromise.then(() => {
